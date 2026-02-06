@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     # This connects your project to the core app's URLs
-    path('shop/', include('core.urls')),
+    path('', include('core.urls')),
 ]

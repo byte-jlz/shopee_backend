@@ -6,8 +6,6 @@ def shop_view(request):
     products = Product.objects.all()
     
     # 2. CART LOGIC: Fetch the current 'pending' order
-    # Note: In a real app with login, you would filter by the logged-in user (e.g., customer=request.user.customer)
-    # For now, we get the *last* pending order created in the system to test.
     cart_order = Order.objects.filter(order_status='pending').last()
 
     cart_items = []
@@ -29,3 +27,10 @@ def shop_view(request):
     }
     
     return render(request, 'shop.html', context)
+
+def home(request):
+    # Fetch all products
+    products = Product.objects.all()
+    
+    # Render the new 'home.html' template
+    return render(request, 'core/home.html', {'products': products})

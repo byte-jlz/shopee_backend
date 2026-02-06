@@ -1,0 +1,75 @@
+{% load static %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopee Clone | Home</title>
+    
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="/" class="logo">ShopeeClone</a>
+            
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Sign up and get 100% off on your first order">
+                <button class="search-btn">Search</button>
+            </div>
+
+            <div class="nav-links">
+                <a href="#">Notifications</a>
+                <a href="#">Help</a>
+                <a href="#">Sign Up</a>
+                <a href="#">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero-section">
+            <h2>Welcome to Shopee Clone</h2>
+            <p>Shop safely from home.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section-title">Daily Discover</div>
+        
+        <div class="product-wrapper">
+            <div class="product-grid">
+                
+                {% for product in products %}
+                <div class="card">
+                    <div class="card-img-container">
+                        {% if product.image_url %}
+                            <img src="{{ product.image_url }}" alt="{{ product.product_name }}" class="card-img">
+                        {% else %}
+                            <span style="color:#ccc;">No Image</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-body">
+                        <div class="card-title">{{ product.product_name }}</div>
+                        
+                        <div class="card-price">
+                            <span>₱</span> {{ product.price }}
+                        </div>
+
+                        <div class="card-shop">
+                           {{ product.shop.shop_name }}
+                        </div>
+                        
+                        <a href="#" class="btn-buy">Buy Now</a>
+                    </div>
+                </div>
+                {% empty %}
+                    <p style="padding:20px;">No products found in the database.</p>
+                {% endfor %}
+                </div>
+        </div>
+    </div>
+
+</body>
+</html>
