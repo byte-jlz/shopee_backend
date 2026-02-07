@@ -199,20 +199,35 @@
                 <div class="form-group">
                     <label>Order Summary</label>
                     
-                    <div class="order-summary">
+                    <div class="order-summary" style="max-height: 300px; overflow-y: auto;">
+                        
                         {% for item in cart_items %}
-                            <div class="summary-item">
-                                <span>{{ item.quantity }}x {{ item.product.product_name }}</span>
+                            <div class="summary-item" style="border-bottom: 1px solid #eee; padding: 10px 0; display: flex; justify-content: space-between; align-items: center;">
                                 
-                                <span>₱ {{ item.price_at_purchase }}</span>
+                                <div style="flex: 1;">
+                                    <strong>{{ item.product.product_name }}</strong><br>
+                                    <span style="color: #ee4d2d;">₱ {{ item.price_at_purchase }}</span>
+                                </div>
+
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    
+                                    <a href="{% url 'minus_cart' item.product.id %}" style="background: #ddd; width: 25px; height: 25px; text-align: center; border-radius: 50%; text-decoration: none; color: black;">-</a>
+                                    
+                                    <span>{{ item.quantity }}</span>
+                                    
+                                    <a href="{% url 'plus_cart' item.product.id %}" style="background: #ddd; width: 25px; height: 25px; text-align: center; border-radius: 50%; text-decoration: none; color: black;">+</a>
+
+                                    <a href="{% url 'remove_cart' item.product.id %}" style="color: red; font-size: 0.8rem; margin-left: 5px;">Remove</a>
+                                </div>
+
                             </div>
                         {% empty %}
-                            <div class="summary-item" style="color: gray; justify-content: center;">
+                            <div style="padding: 20px; text-align: center; color: gray;">
                                 Cart is empty
                             </div>
                         {% endfor %}
-                    </div>
 
+                    </div>
                     <div class="total-price">
                         Total: ₱ {{ cart_total }}
                     </div>

@@ -69,3 +69,47 @@ def add_to_cart(request, product_id):
 
     # 6. Redirect the user to the Cart page to see their item
     return redirect('cart')
+
+def plus_cart_item(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    customer = Customer.objects.first() # Using our dummy customer
+    
+    # Get the pending order
+    order = Order.objects.filter(customer=customer, order_status='pending').first()
+    
+    if order:
+        # Get the specific item in the cart
+        item = OrderItem.objects.get(order=order, product=product)
+        item.quantity += 1
+        item.save()
+        
+    return redirect('cart')
+
+def minus_cart_item(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    customer = Customer.objects.first()
+    order = Order.objects.filter(customer=customer, order_status='pending').first()
+    
+    if order:
+        item = OrderItem.objects.get(order=order, product=product)
+        
+        # Logic: If quantity is more than 1, decrease it. 
+        # If it is 1, remove it (or you can choose to do nothing).
+        if item.quantity > 1:
+            item.quantity -= 1
+            item.save()
+        else:
+            item.delete() # Remove if it becomes 0
+            
+    return redirect('cart')
+
+def remove_cart_item(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    customer = Customer.objects.first()
+    order = Order.objects.filter(customer=customer, order_status='pending').first()
+    
+    if order:
+        # Find the item and delete it immediately
+        item = OrderItem.objects.filter(order=order, product=product).delete()
+        
+    return redirect('cart')
