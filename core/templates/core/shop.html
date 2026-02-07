@@ -149,7 +149,7 @@
     <div class="container">
         
         <div class="product-section">
-    <h2>Daily Discover</h2>
+    <h2>Cart</h2>
     <div class="product-grid">
         
         {% for product in products %}
@@ -184,50 +184,40 @@
                 <div class="form-group">
                     <label>Shipping Address (From UserAddress Table)</label>
                     <select name="address">
-                        <option value="1" selected>Juan Dela Cruz - 123 Mango St. (Default)</option>
-                        <option value="2">Juan Dela Cruz - 456 Ayala Ave. (Office)</option>
+                        {% for address in user_addresses %}
+                        <option value="{{address.id}}" {% if address.is_default %} selected {% endif %}>
+                        {{ address.recipient_name }} - {{ address.street_address }}, {{ address.city }}
+
+                        </option>
+                        {% empty %}
+                        <option value="">No address found. Please add one.</option>
+                        {% endfor %}
+                        
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label>Order Summary</label>
+                    
                     <div class="order-summary">
-                        <div class="summary-item">
-                            <span>1x Wireless Earbuds</span>
-                            <span>₱ 299.00</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>2x Casual T-Shirt</span>
-                            <span>₱ 300.00</span>
-                        </div>
+                        {% for item in cart_items %}
+                            <div class="summary-item">
+                                <span>{{ item.quantity }}x {{ item.product.product_name }}</span>
+                                
+                                <span>₱ {{ item.price_at_purchase }}</span>
+                            </div>
+                        {% empty %}
+                            <div class="summary-item" style="color: gray; justify-content: center;">
+                                Cart is empty
+                            </div>
+                        {% endfor %}
                     </div>
-                    <div class="total-price">Total: ₱ 599.00</div>
+
+                    <div class="total-price">
+                        Total: ₱ {{ cart_total }}
+                    </div>
                 </div>
-
-<div class="form-group">
-    <label>Order Summary</label>
-    
-    <div class="order-summary">
-        {% for item in cart_items %}
-            <div class="summary-item">
-                <span>{{ item.quantity }}x {{ item.product.product_name }}</span>
-                
-                <span>₱ {{ item.price_at_purchase }}</span>
-            </div>
-        {% empty %}
-            <div class="summary-item" style="color: gray; justify-content: center;">
-                Cart is empty
-            </div>
-        {% endfor %}
-    </div>
-
-    <div class="total-price">
-        Total: ₱ {{ cart_total }}
-    </div>
-</div>
         </div>
-
     </div>
-
 </body>
 </html>

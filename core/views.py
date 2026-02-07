@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Order, OrderItem, Customer
+from .models import Product, Order, OrderItem, Customer, UserAddress
 
 def shop_view(request):
     # 1. Fetch Products for the "Daily Discover" section
     products = Product.objects.all()
-    
+
+    customer = Customer.objects.first() 
     # 2. CART LOGIC: Fetch the current 'pending' order
     cart_order = Order.objects.filter(order_status='pending').last()
 
@@ -19,11 +20,15 @@ def shop_view(request):
         for item in cart_items:
             cart_total += item.price_at_purchase * item.quantity
 
+    user_addresses = UserAddress.objects.filter(customer=customer)
+    
+
     # 3. CONTEXT: Send everything to the HTML
     context = {
         'products': products,
         'cart_items': cart_items,
         'cart_total': cart_total,
+        'user_addresses': user_addresses, # <--- Send this to HTML
     }
     
     return render(request, 'core/shop.html', context)
