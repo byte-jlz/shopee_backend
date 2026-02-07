@@ -26,7 +26,7 @@ def shop_view(request):
         'cart_total': cart_total,
     }
     
-    return render(request, 'shop.html', context)
+    return render(request, 'core/shop.html', context)
 
 def home(request):
     # Fetch all products
